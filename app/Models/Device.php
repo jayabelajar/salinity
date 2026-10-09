@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Database\Factories\DeviceFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Device extends Model
+{
+    /** @use HasFactory<DeviceFactory> */
+    use HasFactory;
+
+    protected $fillable = [
+        'device_uid',
+        'name',
+        'location',
+        'description',
+        'status',
+        'last_seen_at',
+        'firmware_version',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'last_seen_at' => 'datetime',
+        ];
+    }
+
+    public function readings(): HasMany
+    {
+        return $this->hasMany(SensorReading::class);
+    }
+
+    public function alerts(): HasMany
+    {
+        return $this->hasMany(Alert::class);
+    }
+}
